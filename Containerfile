@@ -12,8 +12,8 @@ RUN curl -o /tmp/quicklisp.lisp https://beta.quicklisp.org/quicklisp.lisp \
        --eval '(quit)'
 
 WORKDIR /build
-COPY naked-claw.asd build.lisp package.lisp primitives.lisp \
-     config.lisp buffer.lisp compact.lisp llm.lisp telegram.lisp main.lisp ./
+COPY naked-claw.asd build.lisp ./
+COPY src/ src/
 
 RUN sbcl --non-interactive --load build.lisp
 
