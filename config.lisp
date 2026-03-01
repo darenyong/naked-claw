@@ -1,0 +1,25 @@
+(in-package :naked-claw)
+
+(defvar *telegram-token* nil)
+(defvar *chat-api-url* nil)
+(defvar *chat-model* nil)
+(defvar *compaction-api-url* nil)
+(defvar *compaction-model* nil)
+(defvar *api-key* nil)
+(defvar *data-dir* nil)
+(defvar *max-compact* nil)
+
+(defun load-config ()
+  (setf *telegram-token*    (uiop:getenv "TELEGRAM_TOKEN")
+        *chat-api-url*      (or (uiop:getenv "CHAT_API_URL") "https://mlvoca.com/api/generate")
+        *chat-model*        (or (uiop:getenv "CHAT_MODEL") "deepseek-r1:1.5b")
+        *compaction-api-url* (or (uiop:getenv "COMPACTION_API_URL") *chat-api-url*)
+        *compaction-model*  (or (uiop:getenv "COMPACTION_MODEL") *chat-model*)
+        *api-key*           (or (uiop:getenv "API_KEY") "")
+        *data-dir*          (or (uiop:getenv "DATA_DIR") "/data")
+        *max-compact*       (parse-integer (or (uiop:getenv "MAX_COMPACT") "20"))))
+
+(defun data-file () (merge-pathnames "data.json" (uiop:ensure-directory-pathname *data-dir*)))
+(defun digest-file () (merge-pathnames "digest.md" (uiop:ensure-directory-pathname *data-dir*)))
+
+(defun gemini-p (url) (search "googleapis.com" url))
