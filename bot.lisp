@@ -4,16 +4,29 @@
 
 (in-package :naked-claw)
 
-;;; --- Config ---
+;;; Yason: parse JSON arrays as CL vectors (not lists) so aref/across work
+(setf yason:*parse-json-arrays-as-vectors* t)
 
-(defvar *telegram-token* (uiop:getenv "TELEGRAM_TOKEN"))
-(defvar *chat-api-url* (or (uiop:getenv "CHAT_API_URL") "https://mlvoca.com/api/generate"))
-(defvar *chat-model* (or (uiop:getenv "CHAT_MODEL") "deepseek-r1:1.5b"))
-(defvar *compaction-api-url* (or (uiop:getenv "COMPACTION_API_URL") *chat-api-url*))
-(defvar *compaction-model* (or (uiop:getenv "COMPACTION_MODEL") *chat-model*))
-(defvar *api-key* (or (uiop:getenv "API_KEY") ""))
-(defvar *data-dir* (or (uiop:getenv "DATA_DIR") "/data"))
-(defvar *max-compact* (parse-integer (or (uiop:getenv "MAX_COMPACT") "20")))
+;;; --- Config (loaded at runtime, not baked into image) ---
+
+(defvar *telegram-token* nil)
+(defvar *chat-api-url* nil)
+(defvar *chat-model* nil)
+(defvar *compaction-api-url* nil)
+(defvar *compaction-model* nil)
+(defvar *api-key* nil)
+(defvar *data-dir* nil)
+(defvar *max-compact* nil)
+
+(defun load-config ()
+  (setf *telegram-token* (uiop:getenv "TELEGRAM_TOKEN"))
+  (setf *chat-api-url* (or (uiop:getenv "CHAT_API_URL") "https://mlvoca.com/api/generate"))
+  (setf *chat-model* (or (uiop:getenv "CHAT_MODEL") "deepseek-r1:1.5b"))
+  (setf *compaction-api-url* (or (uiop:getenv "COMPACTION_API_URL") *chat-api-url*))
+  (setf *compaction-model* (or (uiop:getenv "COMPACTION_MODEL") *chat-model*))
+  (setf *api-key* (or (uiop:getenv "API_KEY") ""))
+  (setf *data-dir* (or (uiop:getenv "DATA_DIR") "/data"))
+  (setf *max-compact* (parse-integer (or (uiop:getenv "MAX_COMPACT") "20"))))
 
 (defun data-file () (merge-pathnames "data.json" (uiop:ensure-directory-pathname *data-dir*)))
 (defun digest-file () (merge-pathnames "digest.md" (uiop:ensure-directory-pathname *data-dir*)))
@@ -27,7 +40,7 @@
       (with-open-file (s (data-file) :if-does-not-exist nil)
         (if s
             (let ((data (yason:parse s)))
-              (gethash "messages" data))
+              (coerce (gethash "messages" data) 'list))
             (list)))
     (error () (list))))
 
@@ -209,8 +222,7 @@
                              :content-type "application/json"
                              :content body
                              :want-stream nil
-                             :connection-timeout 60
-                             :read-timeout 60)
+                             :connection-timeout 60)
       (let ((response-text (if (typep body-bytes '(vector (unsigned-byte 8)))
                                (flexi-streams:octets-to-string body-bytes :external-format :utf-8)
                                body-bytes)))
@@ -265,6 +277,7 @@
 ;;; --- Main ---
 
 (defun main ()
+  (load-config)
   (unless *telegram-token*
     (format *error-output* "TELEGRAM_TOKEN is required~%")
     (uiop:quit 1))
