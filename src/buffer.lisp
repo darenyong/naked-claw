@@ -1,3 +1,5 @@
+;;; Message buffer — JSON file read/write/append
+
 (in-package :naked-claw)
 
 (defun read-buffer ()

@@ -1,3 +1,5 @@
+;;; JSON and HTTP primitives — fills gaps CL doesn't ship for free
+
 (in-package :naked-claw)
 
 (setf yason:*parse-json-arrays-as-vectors* t)

@@ -1,3 +1,5 @@
+;;; Entry point — load config, start polling loop
+
 (in-package :naked-claw)
 
 (defun main ()

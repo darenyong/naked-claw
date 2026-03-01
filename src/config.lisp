@@ -1,3 +1,5 @@
+;;; Runtime configuration from environment variables
+
 (in-package :naked-claw)
 
 (defvar *telegram-token* nil)

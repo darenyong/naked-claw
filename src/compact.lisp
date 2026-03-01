@@ -1,3 +1,5 @@
+;;; Compaction — digest old messages to stay within context window
+
 (in-package :naked-claw)
 
 (defun read-digest ()

@@ -1,3 +1,5 @@
+;;; Telegram bot — long-polling, message dispatch
+
 (in-package :naked-claw)
 
 (defvar *update-offset* 0)

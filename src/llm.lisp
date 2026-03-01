@@ -1,3 +1,5 @@
+;;; LLM integration — prompt building, API calls (Gemini + Ollama)
+
 (in-package :naked-claw)
 
 (defun strip-think-tags (text)
