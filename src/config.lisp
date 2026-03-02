@@ -13,8 +13,8 @@
 
 (defun load-config ()
   (setf *telegram-token*    (uiop:getenv "TELEGRAM_TOKEN")
-        *chat-api-url*      (or (uiop:getenv "CHAT_API_URL") "https://mlvoca.com/api/generate")
-        *chat-model*        (or (uiop:getenv "CHAT_MODEL") "deepseek-r1:1.5b")
+        *chat-api-url*      (uiop:getenv "CHAT_API_URL")
+        *chat-model*        (uiop:getenv "CHAT_MODEL")
         *compaction-api-url* (or (uiop:getenv "COMPACTION_API_URL") *chat-api-url*)
         *compaction-model*  (or (uiop:getenv "COMPACTION_MODEL") *chat-model*)
         *api-key*           (or (uiop:getenv "API_KEY") "")

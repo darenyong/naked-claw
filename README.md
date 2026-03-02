@@ -49,8 +49,8 @@ Every file is under 60 lines. You can read the entire codebase in one sitting.
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `TELEGRAM_TOKEN` | Yes | — | Bot token from BotFather |
-| `CHAT_API_URL` | No | mlvoca (demo) | LLM API endpoint |
-| `CHAT_MODEL` | No | deepseek-r1:1.5b | Model name |
+| `CHAT_API_URL` | Yes | — | LLM API endpoint |
+| `CHAT_MODEL` | Yes | — | Model name |
 | `API_KEY` | No | — | API key for the LLM provider |
 | `COMPACTION_API_URL` | No | same as chat | Separate endpoint for compaction |
 | `COMPACTION_MODEL` | No | same as chat | Separate model for compaction |

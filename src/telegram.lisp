@@ -38,7 +38,7 @@
              (elapsed-ms (round (* 1000 (/ (- (get-internal-real-time) start)
                                            internal-time-units-per-second)))))
         (append-message "assistant" reply :elapsed-ms elapsed-ms)
-        (send-message chat-id reply)
+        (send-message chat-id (format nil "~A~%~%(~,1Fs)" reply (/ elapsed-ms 1000.0)))
         (format t "[~A] Bot (~,1Fs): ~A...~%"
                 (timestamp-now) (/ elapsed-ms 1000.0)
                 (subseq reply 0 (min 100 (length reply))))

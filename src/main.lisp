@@ -4,8 +4,8 @@
 
 (defun main ()
   (load-config)
-  (unless *telegram-token*
-    (format *error-output* "TELEGRAM_TOKEN is required~%")
+  (unless (and *telegram-token* *chat-api-url* *chat-model*)
+    (format *error-output* "Required: TELEGRAM_TOKEN, CHAT_API_URL, CHAT_MODEL~%")
     (uiop:quit 1))
   (format t "naked-claw started.~%")
   (format t "  CHAT_API_URL: ~A~%" *chat-api-url*)
