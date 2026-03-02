@@ -41,4 +41,3 @@ The AI's training data is JS/TS-dominated. These are the CL-specific gotchas we'
 
 - `build.lisp` loads Quicklisp deps, loads the ASDF system, compiles via `save-lisp-and-die`.
 - Multi-stage Containerfile: SBCL + Quicklisp in build stage, 13 MB binary in minimal Debian runtime.
-- Deploy to cave: `scp` files, `podman build`, `podman run` with `--env-file`.
